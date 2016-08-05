@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <script src="lib/pouchdb/dist/pouchdb.min.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/sampleObjects.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/items.storage.js"></script>
+    <script src="js/overview.controller.js"></script>
+
+  </head>
+<body ng-app="starter">
+
+  <ion-pane ng-controller="OverviewController as vm">
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">StApps Test<span ng-if="vm.ls!==''"></h1>
+      <div class="buttons">
+        <button ng-click="emptyLocalStorage()" class="button button-icon icon ion-close-circled"></button>
+        <button ng-click="writeToLocalStorage('something')" class="button button-icon icon ion-edit"></button>
+        <button ng-click="vm.showVersion()" class="button button-icon icon ion-eye"></button>
+        <!-- <button ng-click="vm.getAllBirthdays()" class="button button-icon icon">Read All</button> -->
+      </div>
+
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+
+        <a class="item item-icon-left" ng-click="clearDB()">
+          <i class="icon ion-trash-b"></i>
+          Clear the DB
+        </a>
+
+        <a class="item item-icon-left" ng-click="addRandomItems('favorite', 1)">
+          <i class="icon ion-plus-circled"></i>
+          Insert 1 Favorite
+          <span class="item-note">
+            1
+          </span>
+        </a>
+
+        <a class="item item-icon-left" ng-click="addRandomItems('favorite', 100)">
+          <i class="icon ion-plus-circled"></i>
+          Insert 100 Favorites
+          <span class="item-note">
+            100
+          </span>
+        </a>
+
+        <a class="item item-icon-left" ng-click="addRandomItems('favorite', 1000)">
+          <i class="icon ion-plus-circled"></i>
+          Insert 1000 Favorites
+          <span class="item-note">
+            1000
+          </span>
+        </a>
+
+        <a class="item item-icon-left" ng-click="addRandomItems('event', 1)">
+          <i class="icon ion-plus-circled"></i>
+          Insert 1 Event
+          <span class="item-note">
+            1
+          </span>
+        </a>
+
+        <a class="item item-icon-left" ng-click="addRandomItems('event', 100)">
+          <i class="icon ion-plus-circled"></i>
+          Insert 100 Events
+          <span class="item-note">
+            100
+          </span>
+        </a>
+
+        <a class="item item-icon-left" ng-click="addRandomItems('event', 1000)">
+          <i class="icon ion-plus-circled"></i>
+          Insert 1000 Events
+          <span class="item-note">
+            1000
+          </span>
+        </a>
+
+        <a class="item item-icon-left" ng-click="vm.getItems('favorite')">
+          <i class="icon ion-ios-book"></i>
+          Read all favorites (show 10)
+        </a>
+
+        <a class="item item-icon-left" ng-click="vm.getItems('event')">
+          <i class="icon ion-ios-book"></i>
+          Read all events (show 10)
+        </a>
+
+      </div>
+      <ion-list>
+        <ion-item ng-repeat="i in vm.items" ng-if="$index < 10" ng-click="vm.showEditItem(i)">
+          <div style="float: left">{{$index + 1}}. {{ i.Name }}</div>
+          <div style="float: right">{{ i.type }} ({{ i.uid }})</div>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+    <div class="bar bar-footer bar-balanced">
+      <div class="title" ng-show="!vm.loading && vm.duration"><i class="icon ion-clock"></i> Duration: {{vm.quantity}} items in {{vm.duration}} ms</div>
+      <div class="title" ng-show="vm.loading"><i class="icon ion-clock"></i> Working... </div>
+    </div>
+  </ion-pane>
+
+  <script id="add-or-edit-item.html" type="text/ng-template">
+    <ion-modal-view>
+      <ion-header-bar>
+        <h1 class="title">{{ action }} Item</h1>
+        <div class="buttons">
+        <button ng-hide="isAdd" ng-click="deleteItem()" class="button button-icon icon ion-trash-a"></button>
+        </div>
+      </ion-header-bar>
+      <ion-content>
+        <div class="list list-inset">
+          <label class="item item-input">
+          <input type="text" placeholder="Name" ng-model="item.name">
+          </label>
+          <label class="item item-input">
+          <input type="text" placeholder="Module" ng-model="item.module">
+          </label>
+        </div>
+        <div class="padding">
+          <button ng-click="updateItem()" class="button button-block button-positive activated">Save</button>
+        </div>
+      </ion-content>
+    </ion-modal-view>
+  </script>
+</body>
+</html>
